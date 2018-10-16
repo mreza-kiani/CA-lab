@@ -1,10 +1,21 @@
-module IF_ID_REG(input clk, rst, input [31:0] pcIn, input [31:0] inst, output reg[31:0] pcOut);
+module IF_ID_REG(
+	input clk, 
+	input rst, 
+	input [31:0] pcIn, 
+	input [31:0] instIn, 
+	output reg[31:0] pcOut,
+	output reg[31:0] instOut
+);
 
 	always@(posedge clk, posedge rst) begin
-		if(rst)
+		if(rst) begin
 			pcOut <= 32'b0;
-		else 
+			instOut <= 32'b0;			
+		end
+		else begin
 			pcOut <= pcIn;
+			instOut <= instIn;
+		end
 	end
 
 endmodule

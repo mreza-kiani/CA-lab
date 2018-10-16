@@ -302,16 +302,35 @@ input          TD_CLK27;            //	TV Decoder 27MHz CLK
 inout	[35:0]	GPIO_0;					//	GPIO Connection 0
 inout	[35:0]	GPIO_1;					//	GPIO Connection 1
 
-wire [31:0] IF_PC, IF_Inst, IF_ID_PC, ID_PC, ID_EXE_PC, EXE_PC, EXE_MEM_PC, MEM_PC, MEM_WB_PC, WB_PC;
-IF IF_Stage(KEY[3], KEY[2], IF_PC, IF_Inst);
-IF_ID_REG IF_ID(KEY[3], KEY[2], IF_PC, IF_Inst, IF_ID_PC);
-ID ID_Stage(KEY[3], KEY[2], IF_ID_PC, ID_PC);
-ID_EXE_REG ID_EXE(KEY[3], KEY[2], ID_PC, ID_EXE_PC);
-EXE EXE_Stage(KEY[3], KEY[2], ID_EXE_PC, EXE_PC);
-EXE_MEM_REG EXE_MEM(KEY[3], KEY[2], EXE_PC, EXE_MEM_PC);
-MEM MEM_Stage(KEY[3], KEY[2], EXE_MEM_PC, MEM_PC);
-MEM_WB_REG MEM_WB(KEY[3], KEY[2], MEM_PC, MEM_WB_PC);
-WB WB_STAGE(KEY[3], KEY[2], MEM_WB_PC, WB_PC);
+wire [31:0] IF_PC, IF_Inst, IF_ID_PC, IF_ID_Inst, 
+			ID_PC, ID_EXE_PC, 
+			EXE_PC, EXE_MEM_PC, 
+			MEM_PC, MEM_WB_PC, 
+			WB_PC;
+wire ID_EXE_wb_en_out;
+wire ID_EXE_mem_read_out;
+wire ID_EXE_mem_write_out;
+wire [1:0] ID_EXE_br_out;
+wire [3:0] ID_EXE_execute_cammand_out;
+wire [31:0] ID_EXE_reg1_out;
+wire [31:0] ID_EXE_reg2_out;
+wire [31:0] ID_EXE_dest_out;
+
+wire [4:0] WB_dest_address;
+wire WB_write_en;
+wire [31:0] WB_write_value;
+
+IF IF_Stage(CLOCK_50, SW[0], IF_PC, IF_Inst);
+IF_ID_REG IF_ID(CLOCK_50, SW[0], IF_PC, IF_Inst, IF_ID_PC, IF_ID_Inst);
+ID ID_Stage(CLOCK_50, SW[0], IF_ID_PC, IF_ID_Inst, WB_dest_address, WB_write_en, WB_write_value, 
+			ID_PC, ID_wb_en, ID_mem_read, ID_mem_write, ID_br, ID_execute_cammand, ID_reg1, ID_reg2, ID_dest);
+ID_EXE_REG ID_EXE(CLOCK_50, SW[0], ID_PC, ID_wb_en, ID_mem_read, ID_mem_write, ID_br, ID_execute_cammand, ID_reg1, ID_reg2, ID_dest, 
+			ID_EXE_PC, ID_EXE_wb_en_out, ID_EXE_mem_read_out, ID_EXE_mem_write_out, ID_EXE_br_out, ID_EXE_execute_cammand_out, ID_EXE_reg1_out, ID_EXE_reg2_out, ID_EXE_dest_out);
+EXE EXE_Stage(CLOCK_50, SW[0], ID_EXE_PC, EXE_PC);
+EXE_MEM_REG EXE_MEM(CLOCK_50, SW[0], EXE_PC, EXE_MEM_PC);
+MEM MEM_Stage(CLOCK_50, SW[0], EXE_MEM_PC, MEM_PC);
+MEM_WB_REG MEM_WB(CLOCK_50, SW[0], MEM_PC, MEM_WB_PC);
+WB WB_STAGE(CLOCK_50, SW[0], MEM_WB_PC, WB_PC);
 
 SevenSegment segment3(IF_ID_PC[5:2], HEX3);
 SevenSegment segment2(ID_EXE_PC[5:2], HEX2);
