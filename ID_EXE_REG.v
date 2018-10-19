@@ -9,7 +9,7 @@ module ID_EXE_REG(
 	input [3:0] execute_cammand,
 	input [31:0] reg1,
 	input [31:0] reg2,
-	input [31:0] dest,
+	input [4:0] dest,
 	output reg [31:0] pc_out,
 	output reg wb_en_out,
 	output reg mem_read_out,
@@ -18,20 +18,20 @@ module ID_EXE_REG(
 	output reg [3:0] execute_cammand_out,
 	output reg [31:0] reg1_out,
 	output reg [31:0] reg2_out,
-	output reg [31:0] dest_out
+	output reg [4:0] dest_out
 );
 
 	always@(posedge clk, posedge rst) begin
 		if(rst) begin
 			pc_out <= 32'b0;
-			wb_en_out <= 32'b0;
-			mem_read_out <= 32'b0;
-			mem_write_out <= 32'b0;
-			br_out <= 32'b0;
-			execute_cammand_out <= 32'b0;
+			wb_en_out <= 1'b0;
+			mem_read_out <= 1'b0;
+			mem_write_out <= 1'b0;
+			br_out <= 2'b0;
+			execute_cammand_out <= 4'b0;
 			reg1_out <= 32'b0;
 			reg2_out <= 32'b0;
-			dest_out <= 32'b0;
+			dest_out <= 5'b0;
 		end
 		else begin
 			pc_out <= pc_in;

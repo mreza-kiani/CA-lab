@@ -14,11 +14,11 @@ module ID(
 	output [3:0] execute_cammand,
 	output [31:0] reg1,
 	output [31:0] reg2,
-	output [31:0] out_dest
+	output [4:0] out_dest
 );
 
 	wire [5:0] opcode;
-	wire [4:0] src1, src2 ,dest;
+	wire [4:0] src1, src2, dest;
 	wire [15:0] imm;
 
 	wire is_imm;
@@ -35,7 +35,7 @@ module ID(
 	RegisterFile RF(clk, rst, src1, src2, dest_address, write_value, write_en, reg1, in_reg2);
 	SignExtend SE(imm, imm_out);
 	MUX32 Reg2Mux(is_imm, in_reg2, imm_out, reg2);
-	MUX32 DestMux(is_imm, dest, src2, out_dest);
+	MUX5 DestMux(is_imm, dest, src2, out_dest);
 
 	assign pcOut = pcIn;
 endmodule

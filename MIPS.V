@@ -306,7 +306,13 @@ wire [31:0] IF_PC, IF_Inst, IF_ID_PC, IF_ID_Inst,
 			ID_PC, ID_EXE_PC, 
 			EXE_PC, EXE_MEM_PC, 
 			MEM_PC, MEM_WB_PC, 
-			WB_PC;
+			WB_PC ;
+		
+wire [31:0] ID_reg1, ID_reg2;
+wire [4:0] ID_dest;
+wire [1:0] ID_br;
+wire [3:0] ID_execute_cammand;
+wire ID_wb_en, ID_mem_read, ID_mem_write;
 wire ID_EXE_wb_en_out;
 wire ID_EXE_mem_read_out;
 wire ID_EXE_mem_write_out;
@@ -314,7 +320,7 @@ wire [1:0] ID_EXE_br_out;
 wire [3:0] ID_EXE_execute_cammand_out;
 wire [31:0] ID_EXE_reg1_out;
 wire [31:0] ID_EXE_reg2_out;
-wire [31:0] ID_EXE_dest_out;
+wire [4:0] ID_EXE_dest_out;
 
 wire [4:0] WB_dest_address;
 wire WB_write_en;
