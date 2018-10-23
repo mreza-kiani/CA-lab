@@ -1,10 +1,33 @@
-module MEM_WB_REG(input clk, rst, input [31:0] pcIn, output reg[31:0] pcOut);
+module MEM_WB_REG(
+	input clk,
+	input rst,
+	input [31:0] pc_in,
+	input [31:0] ALU_result, 
+	input wb_en,
+	input mem_read,
+	input [4:0] dest,
+	output reg[31:0] pc_out,
+	output reg[31:0] ALU_result_out,
+	output reg wb_en_out,
+	output reg mem_read_out,
+	output reg [4:0] dest_out
+);
 
 	always@(posedge clk, posedge rst) begin
-		if(rst)
-			pcOut <= 32'b0;
-		else 
-			pcOut <= pcIn;
+		if(rst) begin
+			pc_out <= 32'b0;
+			ALU_result_out <= 32'b0;
+			wb_en_out <= 1'b0;
+			mem_read_out <= 1'b0;
+			dest_out <= 5'b0;
+		end
+		else begin
+			pc_out <= pc_in;
+			ALU_result_out <= ALU_result;
+			wb_en_out <= wb_en;
+			mem_read_out <= mem_read;
+			dest_out <= dest;
+		end
 	end
 
 endmodule

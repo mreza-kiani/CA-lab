@@ -14,7 +14,7 @@
 
 	always @(src1, src2, registers[src1], registers[src2]) begin
 		reg1 <= registers[src1];
-    	reg2 <= registers[src2];
+		reg2 <= registers[src2];
 	end
 
 	integer i;

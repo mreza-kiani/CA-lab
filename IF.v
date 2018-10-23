@@ -1,17 +1,18 @@
-module IF(input clk, rst, output [31:0] pcOut, output [31:0] inst);
+module IF(
+	input clk,
+	input rst,
+	input br_select,
+	input [31:0] br_pc,
+	output reg [31:0] pc_plus,
+	output [31:0] inst
+);
+	wire [31:0] pc_in, pc_out;
 	
-	reg [31:0] pc;
+	MUX32 mux(br_select, pc_plus, br_pc, pc_in);
+	Register32 pc(clk, rst, pc_in, pc_out);
+	ROM rom(pc_out, inst);
 	
-	initial pc = 32'b0;
-
-	ROM rom(pc, inst);
-	
-	always@(posedge clk, posedge rst) begin
-		if(rst)
-			pc <= 32'b0;
-		else
-			pc <= pc + 4;
+	always@(pc) begin
+		pc_plus <= pc_out + 4;
 	end
-
-	assign pcOut = pc;
 endmodule
