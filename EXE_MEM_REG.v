@@ -7,12 +7,14 @@ module EXE_MEM_REG(
 	input mem_read,
 	input mem_write,
 	input [4:0] dest,
+	input [31:0] reg2,
 	output reg[31:0] pcOut,
 	output reg[31:0] ALU_result_out,
 	output reg wb_en_out,
 	output reg mem_read_out,
 	output reg mem_write_out,
-	output reg [4:0] dest_out
+	output reg [4:0] dest_out,
+	output reg [31:0] reg2_out
 );
 
 	always@(posedge clk, posedge rst) begin
@@ -23,6 +25,7 @@ module EXE_MEM_REG(
 			mem_read_out <= 1'b0;
 			mem_write_out <= 1'b0;
 			dest_out <= 5'b0;
+			reg2_out <= 32'b0;
 		end
 		else begin
 			pcOut <= pcIn;
@@ -31,6 +34,7 @@ module EXE_MEM_REG(
 			mem_read_out <= mem_read;
 			mem_write_out <= mem_write;
 			dest_out <= dest;
+			reg2_out <= reg2;
 		end
 	end
 

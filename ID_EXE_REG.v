@@ -11,6 +11,7 @@ module ID_EXE_REG(
 	input [31:0] data2,
 	input [31:0] reg2,
 	input [4:0] dest,
+	input flush,
 	output reg [31:0] pc_out,
 	output reg wb_en_out,
 	output reg mem_read_out,
@@ -25,6 +26,18 @@ module ID_EXE_REG(
 
 	always@(posedge clk, posedge rst) begin
 		if(rst) begin
+			pc_out <= 32'b0;
+			wb_en_out <= 1'b0;
+			mem_read_out <= 1'b0;
+			mem_write_out <= 1'b0;
+			br_out <= 2'b0;
+			execute_cammand_out <= 4'b0;
+			data1_out <= 32'b0;
+			data2_out <= 32'b0;
+			reg2_out <= 32'b0;
+			dest_out <= 5'b0;
+		end
+		else if(flush) begin
 			pc_out <= 32'b0;
 			wb_en_out <= 1'b0;
 			mem_read_out <= 1'b0;

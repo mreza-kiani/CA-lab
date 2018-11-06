@@ -18,7 +18,8 @@ module EXE(
 	output wb_en_out,
 	output mem_read_out,
 	output mem_write_out,
-	output [4:0] dest_out
+	output [4:0] dest_out,
+	output [31:0] reg2_out
 );
 
 	ALU alu(data1, data2, execute_cammand, ALU_result);
@@ -33,5 +34,6 @@ module EXE(
 	assign mem_read_out = mem_read;
 	assign mem_write_out = mem_write;
 	assign dest_out = dest;
-
+	assign reg2_out = reg2;
+	
 endmodule
