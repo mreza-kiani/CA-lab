@@ -28,9 +28,9 @@ module ALU(
 				result <= data1 << data2;
 			end
 			4'b1001 : begin //SRA
-				result <= data1 >>> data2;
+				result <= $signed(data1) >>> data2;
 			end
-			4'b1010 : begin//SRL
+			4'b1010 : begin //SRL
 				result <= data1 >> data2;
 			end
 		endcase
