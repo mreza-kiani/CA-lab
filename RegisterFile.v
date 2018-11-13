@@ -23,7 +23,7 @@
 			for (i = 0; i < 32; i = i + 1)
 				registers[i] <= i;
 		end
-		else if (write_en) begin 
+		else if (write_en && dest != 0) begin 
 			registers[dest] <= write_value;
 		end
 	end
