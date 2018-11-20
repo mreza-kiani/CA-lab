@@ -3,7 +3,7 @@ MIPS implementation with verilog in Computer Architecture Lab.
 
 ## Phases
 - [x] MIPS Simple Implemenation
-- [ ] Hazard Detection
+- [x] Hazard Detection
 - [ ] Forwarding
 - [ ] SRAM
 - [ ] Cache
