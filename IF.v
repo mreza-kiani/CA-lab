@@ -3,6 +3,7 @@ module IF(
 	input rst,
 	input br_select,
 	input [31:0] br_pc,
+	input freeze,
 	output reg [31:0] pc_plus,
 	output [31:0] inst
 );
@@ -13,6 +14,9 @@ module IF(
 	ROM rom(pc_out, inst);
 	
 	always@(pc) begin
-		pc_plus <= pc_out + 4;
+		if(freeze == 1'b0)
+			pc_plus <= pc_out + 4;
+		else 
+			pc_plus <= pc_out;
 	end
 endmodule

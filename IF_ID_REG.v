@@ -4,6 +4,7 @@ module IF_ID_REG(
 	input [31:0] pcIn, 
 	input [31:0] instIn,
 	input flush,
+	input freeze,
 	output reg[31:0] pcOut,
 	output reg[31:0] instOut
 );
@@ -17,7 +18,7 @@ module IF_ID_REG(
 			pcOut <= 32'b0;
 			instOut <= 32'b0;			
 		end
-		else begin
+		else if(freeze == 1'b0) begin
 			pcOut <= pcIn;
 			instOut <= instIn;
 		end

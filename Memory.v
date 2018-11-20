@@ -18,7 +18,7 @@ module Memory(
 	always @(posedge clk, posedge rst) begin
 		if (rst) begin
 			for (i = 0; i < 64; i = i + 1)
-				memory[i] <= i;
+				memory[i] <= 0;
 		end
 		else if (mem_write) begin 
 			memory[address] <= data;
