@@ -17,11 +17,13 @@ module ID(
 	output [31:0] data2,
 	output [31:0] reg2,
 	output [4:0] out_dest,
-	output src2_check
+	output src2_check,
+	output [4:0] src1,
+	output [4:0] src2
 );
 
 	wire [5:0] opcode;
-	wire [4:0] src1, src2, dest;
+	wire [4:0] dest;
 	wire [15:0] imm;
 
 	wire is_imm;

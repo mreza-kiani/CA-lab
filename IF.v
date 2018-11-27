@@ -13,7 +13,7 @@ module IF(
 	Register32 pc(clk, rst, pc_in, pc_out);
 	ROM rom(pc_out, inst);
 	
-	always@(pc) begin
+	always@(*) begin
 		if(freeze == 1'b0)
 			pc_plus <= pc_out + 4;
 		else 

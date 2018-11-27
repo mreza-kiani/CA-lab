@@ -309,7 +309,7 @@ wire [31:0] IF_PC, IF_Inst, IF_ID_PC, IF_ID_Inst,
 			WB_PC ;
 		
 wire [31:0] ID_data1, ID_data2, ID_reg2;
-wire [4:0] ID_dest;
+wire [4:0] ID_dest, ID_src1, ID_src2;
 wire [1:0] ID_br;
 wire [3:0] ID_execute_cammand;
 wire ID_wb_en, ID_mem_read, ID_mem_write;
@@ -319,7 +319,7 @@ wire ID_EXE_mem_write_out;
 wire [1:0] ID_EXE_br_out;
 wire [3:0] ID_EXE_execute_cammand_out;
 wire [31:0] ID_EXE_data1_out, ID_EXE_data2_out , ID_EXE_reg2_out;
-wire [4:0] ID_EXE_dest_out;
+wire [4:0] ID_EXE_dest_out, ID_EXE_src1_out, ID_EXE_src2_out;
 
 
 wire EXE_br_select;
@@ -352,15 +352,17 @@ wire [31:0] WB_write_value;
 
 wire Hazard_freeze, ID_src2_check;
 
+wire [1:0] Forward_sel_val1, Forward_sel_val2, Forward_sel_dest;
+
 IF IF_Stage(CLOCK_50, SW[0], EXE_br_select, EXE_br_pc, Hazard_freeze,
 			IF_PC, IF_Inst);
 IF_ID_REG IF_ID(CLOCK_50, SW[0], IF_PC, IF_Inst, EXE_br_select, Hazard_freeze,
  			IF_ID_PC, IF_ID_Inst);
 ID ID_Stage(CLOCK_50, SW[0], IF_ID_PC, IF_ID_Inst, WB_dest_address, WB_write_en, WB_write_value, Hazard_freeze,
-			ID_PC, ID_wb_en, ID_mem_read, ID_mem_write, ID_br, ID_execute_cammand, ID_data1, ID_data2, ID_reg2, ID_dest, ID_src2_check);
-ID_EXE_REG ID_EXE(CLOCK_50, SW[0], ID_PC, ID_wb_en, ID_mem_read, ID_mem_write, ID_br, ID_execute_cammand, ID_data1, ID_data2, ID_reg2, ID_dest, EXE_br_select,
-			ID_EXE_PC, ID_EXE_wb_en_out, ID_EXE_mem_read_out, ID_EXE_mem_write_out, ID_EXE_br_out, ID_EXE_execute_cammand_out, ID_EXE_data1_out, ID_EXE_data2_out, ID_EXE_reg2_out, ID_EXE_dest_out);
-EXE EXE_Stage(CLOCK_50, SW[0], ID_EXE_PC, ID_EXE_wb_en_out, ID_EXE_mem_read_out, ID_EXE_mem_write_out, ID_EXE_br_out, ID_EXE_execute_cammand_out, ID_EXE_data1_out, ID_EXE_data2_out, ID_EXE_reg2_out, ID_EXE_dest_out, 
+			ID_PC, ID_wb_en, ID_mem_read, ID_mem_write, ID_br, ID_execute_cammand, ID_data1, ID_data2, ID_reg2, ID_dest, ID_src2_check, ID_src1, ID_src2);
+ID_EXE_REG ID_EXE(CLOCK_50, SW[0], ID_PC, ID_wb_en, ID_mem_read, ID_mem_write, ID_br, ID_execute_cammand, ID_data1, ID_data2, ID_reg2, ID_dest, EXE_br_select, ID_src1, ID_src2,
+			ID_EXE_PC, ID_EXE_wb_en_out, ID_EXE_mem_read_out, ID_EXE_mem_write_out, ID_EXE_br_out, ID_EXE_execute_cammand_out, ID_EXE_data1_out, ID_EXE_data2_out, ID_EXE_reg2_out, ID_EXE_dest_out, ID_EXE_src1_out, ID_EXE_src2_out);
+EXE EXE_Stage(CLOCK_50, SW[0], ID_EXE_PC, ID_EXE_wb_en_out, ID_EXE_mem_read_out, ID_EXE_mem_write_out, ID_EXE_br_out, ID_EXE_execute_cammand_out, ID_EXE_data1_out, ID_EXE_data2_out, ID_EXE_reg2_out, ID_EXE_dest_out, Forward_sel_val1, Forward_sel_val2, Forward_sel_dest, EXE_MEM_ALU_result, WB_write_value,
 			EXE_PC, EXE_br_select, EXE_br_pc, EXE_ALU_result, EXE_wb_en, EXE_mem_read, EXE_mem_write, EXE_dest, EXE_reg2);
 EXE_MEM_REG EXE_MEM(CLOCK_50, SW[0], EXE_PC, EXE_ALU_result, EXE_wb_en, EXE_mem_read, EXE_mem_write, EXE_dest, EXE_reg2,
  			EXE_MEM_PC, EXE_MEM_ALU_result, EXE_MEM_wb_en, EXE_MEM_mem_read, EXE_MEM_mem_write, EXE_MEM_dest, EXE_MEM_reg2);
@@ -370,9 +372,12 @@ MEM_WB_REG MEM_WB(CLOCK_50, SW[0], MEM_PC, MEM_ALU_result, MEM_wb_en, MEM_mem_re
  			MEM_WB_PC, MEM_WB_ALU_result, MEM_WB_wb_en, MEM_WB_mem_read, MEM_WB_dest, MEM_WB_mem_result);
 WB WB_STAGE(CLOCK_50, SW[0], MEM_WB_PC, MEM_WB_ALU_result, MEM_WB_wb_en, MEM_WB_mem_read, MEM_WB_dest, MEM_WB_mem_result,
  			WB_PC, WB_write_en, WB_dest_address, WB_write_value);
-HazardDetection HD(IF_ID_Inst[25:21], IF_ID_Inst[20:16], ID_EXE_dest_out, ID_EXE_wb_en_out, EXE_MEM_dest, EXE_MEM_wb_en, ID_src2_check,
+HazardDetection HD(SW[1], IF_ID_Inst[25:21], IF_ID_Inst[20:16], ID_EXE_dest_out, ID_EXE_wb_en_out, EXE_MEM_dest, EXE_MEM_wb_en, ID_src2_check, EXE_mem_read,
 			Hazard_freeze);
-
+Forward FU(ID_src2_check, ID_EXE_src1_out, ID_EXE_src2_out, ID_EXE_dest_out, EXE_MEM_dest, EXE_MEM_wb_en, MEM_WB_dest, MEM_WB_wb_en,
+			   Forward_sel_val1, Forward_sel_val2, Forward_sel_dest);
+	
+	
 SevenSegment segment3(IF_ID_PC[5:2], HEX3);
 SevenSegment segment2(ID_EXE_PC[5:2], HEX2);
 SevenSegment segment1(EXE_MEM_PC[5:2], HEX1);

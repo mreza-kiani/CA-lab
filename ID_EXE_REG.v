@@ -12,6 +12,8 @@ module ID_EXE_REG(
 	input [31:0] reg2,
 	input [4:0] dest,
 	input flush,
+	input [4:0] src1,
+	input [4:0] src2,
 	output reg [31:0] pc_out,
 	output reg wb_en_out,
 	output reg mem_read_out,
@@ -21,7 +23,9 @@ module ID_EXE_REG(
 	output reg [31:0] data1_out,
 	output reg [31:0] data2_out,
 	output reg [31:0] reg2_out,
-	output reg [4:0] dest_out
+	output reg [4:0] dest_out,
+	output reg [4:0] src1_out,
+	output reg [4:0] src2_out
 );
 
 	always@(posedge clk, posedge rst) begin
@@ -36,6 +40,8 @@ module ID_EXE_REG(
 			data2_out <= 32'b0;
 			reg2_out <= 32'b0;
 			dest_out <= 5'b0;
+			src1_out <= 5'b0;
+			src2_out <= 5'b0;
 		end
 		else if(flush) begin
 			pc_out <= 32'b0;
@@ -48,6 +54,8 @@ module ID_EXE_REG(
 			data2_out <= 32'b0;
 			reg2_out <= 32'b0;
 			dest_out <= 5'b0;
+			src1_out <= 5'b0;
+			src2_out <= 5'b0;
 		end
 		else begin
 			pc_out <= pc_in;
@@ -60,6 +68,8 @@ module ID_EXE_REG(
 			data2_out <= data2;
 			reg2_out <= reg2;
 			dest_out <= dest;
+			src1_out <= src1;
+			src2_out <= src2;
 		end
 	end
 

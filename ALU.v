@@ -8,7 +8,7 @@ module ALU(
 		case(execute_cammand) 
 			4'b0000 : begin //ADD
 				result <= data1 + data2;
-			end
+			end 
 			4'b0010 : begin //SUB
 				result <= data1 - data2;
 			end
