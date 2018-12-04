@@ -14,6 +14,7 @@ module ID_EXE_REG(
 	input flush,
 	input [4:0] src1,
 	input [4:0] src2,
+	input freeze,
 	output reg [31:0] pc_out,
 	output reg wb_en_out,
 	output reg mem_read_out,
@@ -57,7 +58,7 @@ module ID_EXE_REG(
 			src1_out <= 5'b0;
 			src2_out <= 5'b0;
 		end
-		else begin
+		else if(freeze == 1'b0) begin
 			pc_out <= pc_in;
 			wb_en_out <= wb_en;
 			mem_read_out <= mem_read;

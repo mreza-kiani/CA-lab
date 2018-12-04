@@ -8,6 +8,7 @@ module EXE_MEM_REG(
 	input mem_write,
 	input [4:0] dest,
 	input [31:0] reg2,
+	input freeze,
 	output reg[31:0] pcOut,
 	output reg[31:0] ALU_result_out,
 	output reg wb_en_out,
@@ -27,7 +28,7 @@ module EXE_MEM_REG(
 			dest_out <= 5'b0;
 			reg2_out <= 32'b0;
 		end
-		else begin
+		else if(freeze == 1'b0) begin
 			pcOut <= pcIn;
 			ALU_result_out <= ALU_result;
 			wb_en_out <= wb_en;
