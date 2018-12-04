@@ -374,7 +374,7 @@ WB WB_STAGE(CLOCK_50, SW[0], MEM_WB_PC, MEM_WB_ALU_result, MEM_WB_wb_en, MEM_WB_
  			WB_PC, WB_write_en, WB_dest_address, WB_write_value);
 HazardDetection HD(SW[1], IF_ID_Inst[25:21], IF_ID_Inst[20:16], ID_EXE_dest_out, ID_EXE_wb_en_out, EXE_MEM_dest, EXE_MEM_wb_en, ID_src2_check, EXE_mem_read,
 			Hazard_freeze);
-Forward FU(ID_src2_check, ID_EXE_src1_out, ID_EXE_src2_out, ID_EXE_dest_out, EXE_MEM_dest, EXE_MEM_wb_en, MEM_WB_dest, MEM_WB_wb_en,
+Forward FU(ID_EXE_src1_out, ID_EXE_src2_out, ID_EXE_dest_out, EXE_MEM_dest, EXE_MEM_wb_en, MEM_WB_dest, MEM_WB_wb_en,
 			   Forward_sel_val1, Forward_sel_val2, Forward_sel_dest);
 	
 	

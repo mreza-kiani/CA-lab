@@ -19,11 +19,11 @@ module ID(
 	output [4:0] out_dest,
 	output src2_check,
 	output [4:0] src1,
-	output [4:0] src2
+	output [4:0] src2_out
 );
 
 	wire [5:0] opcode;
-	wire [4:0] dest;
+	wire [4:0] dest, src2;
 	wire [15:0] imm;
 
 	wire is_imm;
@@ -38,6 +38,7 @@ module ID(
 	assign src2 = inst[20:16];
 	assign dest = inst[15:11];
 	assign imm = inst[15:0];
+	assign src2_out = is_imm ? 5'b0 : src2;
 
 	ControlUnit CU(opcode, temp_mem_read, temp_mem_write, temp_wb_en, is_imm, temp_br, temp_execute_cammand, src2_check);
 	RegisterFile RF(clk, rst, src1, src2, dest_address, write_value, write_en, data1, reg2);
