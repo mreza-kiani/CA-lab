@@ -8,7 +8,7 @@ module SRAM_Controller(
 	inout [15:0] SRAM_DQ,
 	output reg [17:0] SRAM_ADDR,
 	output reg SRAM_WE_N,
-	output reg [31:0] data_out,
+	output reg [63:0] data_out,
 	output freeze
 );
 	reg [15:0] data_temp;
@@ -55,7 +55,17 @@ module SRAM_Controller(
 						count = count + 1;
 					end
 					3'b010 : begin
+						SRAM_ADDR = address + 2;
 						data_out[31:16] = SRAM_DQ;
+						count = count + 1;
+					end
+					3'b011 : begin
+						SRAM_ADDR = address + 3;
+						data_out[47:32] = SRAM_DQ;
+						count = count + 1;
+					end
+					3'b100 : begin
+						data_out[63:48] = SRAM_DQ;
 						count = count + 1;
 					end
 					3'b101 : begin

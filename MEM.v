@@ -20,10 +20,11 @@ module MEM(
 	output freeze
 );
 
-	wire[17:0] address;
-
+	wire [17:0] address;
+	wire [63:0] SRAM_out;
+	
 	SRAM_AddressMapping S_AM(ALU_result, address);
-	SRAM_Controller S_Cntr(clk, rst, mem_read, mem_write, reg2, address, SRAM_DQ, SRAM_ADDR, SRAM_WE_N, mem_result, freeze);
+	SRAM_Controller S_Cntr(clk, rst, mem_read, mem_write, reg2, address, SRAM_DQ, SRAM_ADDR, SRAM_WE_N, SRAM_out, freeze);
 
 	MUX2 wb_en_MUX(freeze, wb_en, 1'b0, wb_en_out);
 
@@ -31,5 +32,6 @@ module MEM(
 	assign ALU_result_out = ALU_result;
 	assign mem_read_out = mem_read;
 	assign dest_out = dest;
+	assign mem_result = SRAM_out[31:0];
 
 endmodule
