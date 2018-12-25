@@ -379,10 +379,5 @@ Forward FU(ID_EXE_src1_out, ID_EXE_src2_out, ID_EXE_dest_out, EXE_MEM_dest, EXE_
 			   Forward_sel_val1, Forward_sel_val2, Forward_sel_dest);
 
 assign {SRAM_UB_N, SRAM_LB_N, SRAM_CE_N, SRAM_OE_N} = 4'b0;
-	
-SevenSegment segment3(IF_ID_PC[5:2], HEX3);
-SevenSegment segment2(ID_EXE_PC[5:2], HEX2);
-SevenSegment segment1(EXE_MEM_PC[5:2], HEX1);
-SevenSegment segment0(MEM_WB_PC[5:2], HEX0);
 
 endmodule

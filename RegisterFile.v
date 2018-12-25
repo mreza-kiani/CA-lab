@@ -20,7 +20,7 @@
 	integer i;
 	always @(negedge clk, posedge rst) begin
 		if (rst) begin
-			for (i = 0; i < 32; i = i + 1)
+			for (i = 0; i < 12; i = i + 1)
 				registers[i] <= i;
 		end
 		else if (write_en && dest != 0) begin 

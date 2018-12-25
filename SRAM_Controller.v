@@ -9,7 +9,7 @@ module SRAM_Controller(
 	output reg [17:0] SRAM_ADDR,
 	output reg SRAM_WE_N,
 	output reg [63:0] data_out,
-	output freeze
+	output ready
 );
 	reg [15:0] data_temp;
 	reg [2:0] count;
@@ -88,7 +88,7 @@ module SRAM_Controller(
 		end
 	end 
 
-	assign freeze = ((mem_write || mem_read) && (count < 3'b101))? 1'b1 : 1'b0;
+	assign ready = (count < 3'b101)? 1'b0 : 1'b1;
 	assign SRAM_DQ = mem_write ? data_temp : 16'bZZZZ_ZZZZ_ZZZZ_ZZZZ;
 	
 endmodule
