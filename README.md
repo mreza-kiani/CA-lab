@@ -6,4 +6,4 @@ MIPS implementation with verilog in Computer Architecture Lab.
 - [x] Hazard Detection
 - [x] Forwarding
 - [x] SRAM
-- [ ] Cache
+- [x] Cache
